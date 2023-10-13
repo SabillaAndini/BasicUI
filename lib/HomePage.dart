@@ -1,112 +1,264 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginWidget(),
-    );
-  }
-}
-
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({
-    super.key,
-  });
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<LoginWidget> createState() => _LoginWidgetState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _HomePageState extends State<HomePage> {
+  List<String> dropMenu = ['Menu 1', 'Menu 2', 'Menu 3'];
+  String _menuItem = 'Menu 1';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-            child: Column(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 160.0),
-            child: Center(
-              child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      color: Colors.black38,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Image.asset('asset/-MOTOR-.png')),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/sabillaand.jpg',
+              height: 30,
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Text("Q Store",
-                style: TextStyle(fontSize: 35, color: Colors.cyanAccent)),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-            child: TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "E-mail",
-                  hintText: "Masukkan E-mail yang valid"),
+            SizedBox(width: 10),
+            Text("App Sabilla"),
+          ],
+        ),
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/sabillaand.jpg'),
+              ),
+              decoration:
+                  BoxDecoration(color: const Color.fromARGB(255, 0, 0, 0)),
+              accountName: Text('Sabilla Andini'),
+              accountEmail: Text('200106sabilla@email.com'),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-            child: TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
-                  labelText: "Password",
-                  hintText: "Masukkan Password"),
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              "Lupa Password? Klik Disini",
-              style: TextStyle(color: Colors.blue, fontSize: 15),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: 50,
-            width: 180,
-            decoration: BoxDecoration(
-                color: Colors.cyanAccent,
-                borderRadius: BorderRadius.circular(20)),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('menu 1'),
+              onTap: () {
+                // Tambahkan logika navigasi ke beranda di sini
+                Navigator.pop(context);
               },
-              child: const Text(
-                "LOGIN",
-                style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
+            ListTile(
+              leading: Icon(Icons.login),
+              title: Text('menu 2'),
+              onTap: () {
+                // Tambahkan logika navigasi ke pengaturan di sini
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('menu 3'),
+              onTap: () {
+                // Tambahkan logika navigasi ke pengaturan di sini
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 10, left: 25),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: DropdownButton(
+                items: dropMenu.map((String value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  );
+                }).toList(),
+                value: _menuItem,
+                onChanged: (String? value) {
+                  setState(() {
+                    _menuItem = value!;
+                  });
+                },
               ),
             ),
           ),
-          const SizedBox(
-            height: 100,
+          Align(
+            alignment: Alignment.center,
+            child: Card(
+              child: Container(
+                height: 100,
+                width: double.infinity,
+                child: Container(
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: 100,
+                        height: 100,
+                        margin: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 3,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              )
+                            ]),
+                        child: Center(
+                          child: Text('Box ${index}'),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
-          TextButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Akun Berhasil Dibuat, silakan login"),
-                  duration: Duration(seconds: 2),
-                  margin: EdgeInsets.all(20),
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ));
-              },
-              child: const Text("Tidak Punya Akun? Buat Disini"))
-        ])));
+          SizedBox(height: 20),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // Warna latar belakang tombol
+              // Tambahan properti lainnya seperti padding, shape, dsb.
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text("Judul Dialog"),
+                  content: Text(
+                    "isi Dialog",
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.black), // Warna latar belakang tombol
+                        // Tambahan properti lainnya seperti padding, shape, dsb.
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Tutup dialog
+                      },
+                      child: Text("Cancel"),
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.black), // Warna latar belakang tombol
+                        // Tambahan properti lainnya seperti padding, shape, dsb.
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Tutup dialog
+                      },
+                      child: Text("Okay"),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Container(
+              height: 40,
+              width: 150,
+              child: Center(
+                child: Text("Show Dialog"),
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // Warna latar belakang tombol
+              // Tambahan properti lainnya seperti padding, shape, dsb.
+            ),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Judul Snackbar"),
+                  action: SnackBarAction(
+                    label: "Close",
+                    textColor: Colors.white,
+                    onPressed: () {
+                      print("batal menghapus");
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              height: 40,
+              width: 150,
+              child: Center(
+                child: Text("Show Snackbar"),
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // Warna latar belakang tombol
+              // Tambahan properti lainnya seperti padding, shape, dsb.
+            ),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 200.0,
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.add),
+                          title: Text('menu 1'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.edit),
+                          title: Text('menu 2'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.search),
+                          title: Text('menu 3'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            child: Container(
+              height: 40,
+              width: 150,
+              child: Center(
+                child: Text("Show Bottom Sheet"),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
